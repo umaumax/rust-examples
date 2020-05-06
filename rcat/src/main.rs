@@ -1,9 +1,12 @@
 use std::env;
+use std::fmt;
 use std::fs::File;
 use std::io;
 use std::io::BufReader;
 use std::ops::Fn;
 use std::str::FromStr;
+
+use anyhow::{Context, Result};
 
 fn build_app() -> clap::App<'static, 'static> {
     let program = std::env::args()
@@ -46,17 +49,28 @@ enum ColorWhen {
     Never,
     Auto,
 }
+
+#[derive(Debug)]
+struct ColorWhenError(String);
+impl fmt::Display for ColorWhenError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "ColorWhen string is 'always|never|auto', not allowed '{}'",
+            self
+        )
+    }
+}
+impl std::error::Error for ColorWhenError {}
+
 impl FromStr for ColorWhen {
-    type Err = String;
+    type Err = ColorWhenError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "always" => Ok(ColorWhen::Always),
             "never" => Ok(ColorWhen::Never),
             "auto" => Ok(ColorWhen::Auto),
-            _ => Err(String::from(format!(
-                "ColorWhen string is 'always|never|auto', not allowed '{}'",
-                s
-            ))),
+            _ => Err(ColorWhenError(s.to_string())),
         }
     }
 }
@@ -88,20 +102,20 @@ pub fn get_buf_reader_safe(
     Ok(BufReader::new(reader))
 }
 
-fn main() {
+fn main() -> Result<()> {
     let matches = build_app().get_matches();
     let base_line = matches
         .value_of("line")
         .unwrap_or("0")
         .parse::<i32>()
-        .expect("parse line option");
+        .with_context(|| format!("failed parse --line option"))?;
     let line_context = matches
         .value_of("context")
         .unwrap_or("3")
         .parse::<i32>()
-        .expect("parse context option");
+        .with_context(|| format!("failed parse -C, --context option"))?;
     let color_when = ColorWhen::from_str(matches.value_of("color").unwrap_or("auto"))
-        .expect("parse color option");
+        .with_context(|| format!("failed parse --color option"))?;
 
     let isatty: bool = atty::is(atty::Stream::Stdout);
     let color_flag: bool = color_when.str_to_color_flag(isatty);
@@ -147,6 +161,7 @@ fn main() {
             true
         });
     });
+    Ok(())
 }
 
 fn write_lines<R, F>(r: &mut R, f: F) -> Result<(), io::Error>
