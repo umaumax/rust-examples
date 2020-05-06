@@ -34,7 +34,7 @@ __注意点として，`failure`はメンテナンスされていない([From fa
 [std::error::Error \- Rust]( https://doc.rust-lang.org/std/error/trait.Error.html#examples )
 
 e.g.
-```
+```rust
 use std::fmt;
 
 #[derive(Debug)]
@@ -48,15 +48,15 @@ impl fmt::Display for XXXError {
 }
 ```
 
-
+`anyhow`の使い方は[Refactor: use error handling lib 'anyhow' · umaumax/rust\-examples@37540cc]( https://github.com/umaumax/rust-examples/commit/37540ccf1422833371fd01171467a4eda4577d21 )を参照
 
 ----
 
 ## memo
-`rustfmt`では，分割できない長すぎる行(max_width default: 100)があるときには，挙動がおかしくなる(exit codeは`0`だが，実質formatされない模様)
+`rustfmt`では，分割できない長すぎる行(max_width default: 100を超える)のとき，挙動がおかしくなる(exit codeは`0`だが，実質formatされない模様)
 
-下記相当のことを行えば回避することは可能な模様
-```
+下記相当のことを行えば回避できる
+```bash
 rustfmt src/main.rs --emit stdout --config format_strings=true
 rustfmt src/main.rs --emit stdout --config max_width=200
 ```
