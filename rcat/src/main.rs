@@ -1,9 +1,7 @@
 use std::env;
 use std::fs::File;
 use std::io;
-use std::io::BufRead;
 use std::io::BufReader;
-use std::io::Stdin;
 use std::ops::Fn;
 use std::str::FromStr;
 
