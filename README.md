@@ -50,6 +50,8 @@ impl fmt::Display for XXXError {
 
 `anyhow`の使い方は[Refactor: use error handling lib 'anyhow' · umaumax/rust\-examples@37540cc]( https://github.com/umaumax/rust-examples/commit/37540ccf1422833371fd01171467a4eda4577d21 )を参照
 
+ライブラリを利用しない場合は[Rustのエラーとなかよくなる \- 3c1uのブログ]( https://3c1u.hatenablog.com/entry/2019/09/18/060000 )のページがわかりやすい
+
 ----
 
 ## memo
