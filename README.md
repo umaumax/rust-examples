@@ -62,3 +62,165 @@ impl fmt::Display for XXXError {
 rustfmt src/main.rs --emit stdout --config format_strings=true
 rustfmt src/main.rs --emit stdout --config max_width=200
 ```
+
+====
+====
+====
+====
+
+## memo
+* [フィールドと変数が同名の時にフィールド初期化省略記法を使う
+]( https://doc.rust-jp.rs/book/second-edition/ch05-01-defining-structs.html#a%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E3%81%A8%E5%A4%89%E6%95%B0%E3%81%8C%E5%90%8C%E5%90%8D%E3%81%AE%E6%99%82%E3%81%AB%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E5%88%9D%E6%9C%9F%E5%8C%96%E7%9C%81%E7%95%A5%E8%A8%98%E6%B3%95%E3%82%92%E4%BD%BF%E3%81%86 )
+* [構造体更新記法で他のインスタンスからインスタンスを生成する
+]( https://doc.rust-jp.rs/book/second-edition/ch05-01-defining-structs.html#a%E6%A7%8B%E9%80%A0%E4%BD%93%E6%9B%B4%E6%96%B0%E8%A8%98%E6%B3%95%E3%81%A7%E4%BB%96%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E3%81%8B%E3%82%89%E3%82%A4%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%B3%E3%82%B9%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B )
+* [異なる型を生成する名前付きフィールドのないタプル構造体を使用する
+]( https://doc.rust-jp.rs/book/second-edition/ch05-01-defining-structs.html#a%E7%95%B0%E3%81%AA%E3%82%8B%E5%9E%8B%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89%E3%81%AE%E3%81%AA%E3%81%84%E3%82%BF%E3%83%97%E3%83%AB%E6%A7%8B%E9%80%A0%E4%BD%93%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B )
+* [ジェネリクスを使用したコードのパフォーマンス]( https://doc.rust-jp.rs/book/second-edition/ch10-01-syntax.html#a%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AA%E3%82%AF%E3%82%B9%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9F%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9 )
+* [注釈: 違いはあるものの、トレイトは他の言語でよくインターフェイスと呼ばれる機能に類似しています。]( https://doc.rust-jp.rs/book/second-edition/ch10-02-traits.html )
+* 同じメソッドのオーバーライドした実装からは、デフォルト実装を呼び出すことができないことに注意
+  * いわゆるsuper的なことはできない? <- そもそも，c++でこれできる?
+* [Freezing \- Rust By Example]( https://doc.rust-lang.org/stable/rust-by-example/scope/borrow/freeze.html )
+  * 最近のrustが賢いのか普通に{}なしでもOKの模様...
+* `PartialOrd`: `Ord`は`order`の略称?
+* [args関数と不正なユニコード]( https://doc.rust-jp.rs/book/second-edition/ch12-01-accepting-command-line-arguments.html#args%E9%96%A2%E6%95%B0%E3%81%A8%E4%B8%8D%E6%AD%A3%E3%81%AA%E3%83%A6%E3%83%8B%E3%82%B3%E3%83%BC%E3%83%89 )
+
+* [Rc<T>は、参照カウント方式のスマートポインタ \- The Rust Programming Language]( https://doc.rust-jp.rs/book/second-edition/ch15-04-rc.html )
+> Rc::clone(&a)ではなく、a.clone()を呼ぶこともできますが、Rustのしきたりは、この場合Rc::cloneを使うことです。 Rc::cloneの実装は、多くの型のclone実装のように、全てのデータのディープコピーをすることではありません。 Rc::cloneの呼び出しは、参照カウントをインクリメントするだけであり、時間はかかりません。 データのディープコピーは時間がかかることもあります。参照カウントにRc::cloneを使うことで、 視覚的にディープコピーをする類のクローンと参照カウントを増やす種類のクローンを区別することができます。 コード内でパフォーマンスの問題を探す際、ディープコピーのクローンだけを考慮し、Rc::cloneの呼び出しを無視できるのです。
+
+* [循環参照は、メモリをリークすることもある]( https://doc.rust-jp.rs/book/second-edition/ch15-06-reference-cycles.html )
+
+* [トレイトオブジェクトには、オブジェクト安全性が必要]( https://doc.rust-jp.rs/book/second-edition/ch17-02-trait-objects.html#a%E3%83%88%E3%83%AC%E3%82%A4%E3%83%88%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AB%E3%81%AF%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E5%AE%89%E5%85%A8%E6%80%A7%E3%81%8C%E5%BF%85%E8%A6%81 )
+
+* 関数内で関数を定義できる(文末のセミコロン不要)
+  * ただし，変数のキャプチャは行われない
+* iterに対する`.zip()`は少ない方の要素数に調整される
+  * 片方がNoneを返したら，zipはNoneを返す
+* コンストラクタは通例として，`new()`メソッドを利用する
+* [構造体を分配する]( https://doc.rust-jp.rs/book/second-edition/ch18-03-pattern-syntax.html#a%E6%A7%8B%E9%80%A0%E4%BD%93%E3%82%92%E5%88%86%E9%85%8D%E3%81%99%E3%82%8B )
+  * 同様に，Enumや参照も分配可能
+* `_`は値を束縛しない特殊な変数名である(`_xxx`などはwarningが省略されるようになるだけであり，通常の変数のように値を束縛することになる)
+* match式
+  * 複数の条件に合致するパターンでは先に記述されたパターンのみマッチする
+  * `@束縛`なるものがあり，値を保持する変数を生成するのと同時にその値がパターンに一致するかを調べることができる
+
+* [C\-like \- Rust By Example]( https://doc.rust-lang.org/rust-by-example/custom_types/enum/c_like.html )
+  * enumの宣言時にi32の具体的な値を入れられるが，他の値はだめ
+  * [Enums with constant values in Rust \- Stack Overflow]( https://stackoverflow.com/questions/36928569/enums-with-constant-values-in-rust )
+これが答えかな?
+* [User Shepmaster \- Stack Overflow]( https://stackoverflow.com/users/155423/shepmaster )
+  * この人がrustの質問によく出てくる
+* [Nesting and labels \- Rust By Example]( https://doc.rust-lang.org/rust-by-example/flow_control/loop/nested.html )
+  * loopにラベルを付加して，指定したラベルのloopを抜けることができる
+* [Returning from loops \- Rust By Example]( https://doc.rust-lang.org/rust-by-example/flow_control/loop/return.html )
+  * loopブロックは値を返すことができる
+* [for and range \- Rust By Example]( https://doc.rust-lang.org/rust-by-example/flow_control/for.html#for-and-iterators )
+  * `for`で回すときの`iter`/`into_iter`/`iter_mut`の比較
+* ifは式なので，3項演算子のように利用できる
+  * このとき，`;`を忘れないように
+* matchは式でもある
+  * `let x = match y {}`の中でreturnやpanicをするケースでは各条件の中の返り値を省略できる
+
+* クロージャーを直接関数の引数にする場合には，クロージャの引数の型を省略できるが，それ以外の場合には明示する必要があることに注意
+  * [rust \- Expected bound lifetime parameter, found concrete lifetime \[E0271\] \- Stack Overflow]( https://stackoverflow.com/questions/31362206/expected-bound-lifetime-parameter-found-concrete-lifetime-e0271 )
+
+====
+
+## enum
+* あらゆる型を指定可能
+* メソッドを定義可能
+
+## 式
+`{文; 式}`は`式`である
+
+## match
+* switchのdefaultに当たるものは`_`
+
+## ファイル名
+下記は特殊なファイル名として扱われる
+
+* main.rs
+* lib.rs
+* mod.rs
+* build.rs
+
+## 注意点
+* 関数の最後に`return`するときに誤って，`;`をつけてしまいがち
+
+## tips
+* `let a: () = vec![];`とすると，右辺の型がerrorメッセージとして出現するので便利
+
+## web検索
+* 標準ドキュメント
+  * [標準ドキュメント検索]( https://doc.rust-lang.org/std/?search= )
+* ライブラリ
+  * [crates\.io: Rust Package Registry]( https://crates.io/ )
+  * [Docs\.rs]( https://docs.rs/ )
+
+## ライフタイム注釈
+* `'a`: `a`でなくてもよい
+* `'static`: これは特別扱いされ，プログラム全体の期間を示す
+
+```
+// グローバルな領域にある文字列の参照をしているため，&strとしては，このブロック外からもアクセス可能
+// 丁寧に考えると右記 let literal_str: &'static str = "xyz";
+{ let literal_str = "xyz"; }
+
+// こちらの場合はブロック内のスコープでのみ有効なので，ブロックを抜けると参照できなくなる
+{ let string = String::from("xyz"); }
+```
+
+## test
+
+```
+#[cfg(test)]
+mod tests {
+	// 外部モジュールで定義したもの全てがこのtestsモジュールでも使用可能になるようにする
+    use super::*;
+
+    #[test]
+    fn xxx_test() {
+
+    }
+}
+```
+
+> 二つの値が等しいとアサーションを行う関数の引数は、 expectedとactualと呼ばれ、引数を指定する順序が問題になる言語やテストフレームワークもあることに注意してください。 ですがRustでは、leftとrightと呼ばれ、期待する値とテスト下のコードが生成する値を指定する順序は、 問題になりません。
+とあるが，推奨する順番は?
+
+testsモジュールの`#[cfg(test)]`という注釈は、コンパイラにcargo buildを走らせた時ではなく、cargo testを走らせた時にだけ、 テストコードをコンパイルし走らせるよう指示します。これにより、ライブラリをビルドしたいだけの時にはコンパイルタイムを節約し、 テストが含まれないので、コンパイル後の成果物のサイズも節約します。
+
+
+`tests`ディレクトリのサブディレクトリ内のファイルは個別クレートとしてコンパイルされたり、 テスト出力に区域が表示されることがないため，テストで共通に利用する仕組みは`tests/common/mod.rs`に記述すると良い
+
+## for_each
+
+* `for_each`では`continue`や`break`はできないので，それを行いたい場合は`for` loopもしくは`try_for_each`を利用すること
+  * [std::iter::Iterator - for_each - Rust]( https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.for_each )
+  * [std::iter::Iterator - try_for_each - Rust]( https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.try_for_each )
+
+## Crates.io
+
+> 公開は永久なので、クレートの公開時には気をつけてください。バージョンは絶対に上書きできず、 コードも削除できません。crates.ioの一つの主な目標が、 crates.ioのクレートに依存している全てのプロジェクトのビルドが、 動き続けるようにコードの永久アーカイブとして機能することなのです。バージョン削除を可能にしてしまうと、 その目標を達成するのが不可能になってしまいます。ですが、公開できるクレートバージョンの数に制限はありません。
+
+## modules
+
+* [Rustのモジュールを詳細に理解する\(1\) モジュール入門 \(この回は簡単です！\) \- 簡潔なQ]( https://qnighy.hatenablog.com/entry/2019/05/06/190000 )
+
+> Rust2018時代のイディオマティックなRustコードでは、
+> extern crate を使いません。
+> 代わりに、extern prelude (1.30.0で安定化) を使います。
+
+* ダウンロード数ランキング
+  * [Crates \- crates\.io: Rust Package Registry]( https://crates.io/crates?sort=downloads )
+
+* [Rust のプレリュード \(prelude\) とは何か \- ひだまりソケットは壊れない]( https://vividcode.hatenablog.com/entry/rust/what-is-prelude )
+
+* プログレスバー
+  * [indicatif \- crates\.io: Rust Package Registry]( https://crates.io/crates/indicatif )
+* ロガー
+  * [env\_logger \- crates\.io: Rust Package Registry]( https://crates.io/crates/env_logger )
+* [Signal handling \- Command Line Applications in Rust]( https://rust-cli.github.io/book/in-depth/signals.html )
+* [exitcode \- crates\.io: Rust Package Registry]( https://crates.io/crates/exitcode )
+
+> System exit code constants as defined by sysexits.h
+
