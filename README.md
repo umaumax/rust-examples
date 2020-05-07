@@ -63,10 +63,10 @@ rustfmt src/main.rs --emit stdout --config format_strings=true
 rustfmt src/main.rs --emit stdout --config max_width=200
 ```
 
-====
-====
-====
-====
+----
+----
+----
+----
 
 ## memo
 * [フィールドと変数が同名の時にフィールド初期化省略記法を使う
@@ -123,7 +123,7 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 * クロージャーを直接関数の引数にする場合には，クロージャの引数の型を省略できるが，それ以外の場合には明示する必要があることに注意
   * [rust \- Expected bound lifetime parameter, found concrete lifetime \[E0271\] \- Stack Overflow]( https://stackoverflow.com/questions/31362206/expected-bound-lifetime-parameter-found-concrete-lifetime-e0271 )
 
-====
+----
 
 ## enum
 * あらゆる型を指定可能
@@ -185,12 +185,12 @@ mod tests {
 ```
 
 > 二つの値が等しいとアサーションを行う関数の引数は、 expectedとactualと呼ばれ、引数を指定する順序が問題になる言語やテストフレームワークもあることに注意してください。 ですがRustでは、leftとrightと呼ばれ、期待する値とテスト下のコードが生成する値を指定する順序は、 問題になりません。
+
 とあるが，推奨する順番は?
 
-testsモジュールの`#[cfg(test)]`という注釈は、コンパイラにcargo buildを走らせた時ではなく、cargo testを走らせた時にだけ、 テストコードをコンパイルし走らせるよう指示します。これにより、ライブラリをビルドしたいだけの時にはコンパイルタイムを節約し、 テストが含まれないので、コンパイル後の成果物のサイズも節約します。
+> testsモジュールの`#[cfg(test)]`という注釈は、コンパイラにcargo buildを走らせた時ではなく、cargo testを走らせた時にだけ、 テストコードをコンパイルし走らせるよう指示します。これにより、ライブラリをビルドしたいだけの時にはコンパイルタイムを節約し、 テストが含まれないので、コンパイル後の成果物のサイズも節約します。
 
-
-`tests`ディレクトリのサブディレクトリ内のファイルは個別クレートとしてコンパイルされたり、 テスト出力に区域が表示されることがないため，テストで共通に利用する仕組みは`tests/common/mod.rs`に記述すると良い
+> `tests`ディレクトリのサブディレクトリ内のファイルは個別クレートとしてコンパイルされたり、 テスト出力に区域が表示されることがないため，テストで共通に利用する仕組みは`tests/common/mod.rs`に記述すると良い
 
 ## for_each
 
