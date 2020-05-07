@@ -123,6 +123,8 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 * クロージャーを直接関数の引数にする場合には，クロージャの引数の型を省略できるが，それ以外の場合には明示する必要があることに注意
   * [rust \- Expected bound lifetime parameter, found concrete lifetime \[E0271\] \- Stack Overflow]( https://stackoverflow.com/questions/31362206/expected-bound-lifetime-parameter-found-concrete-lifetime-e0271 )
 
+* [main関数の返り値の型]( https://doc.rust-lang.org/reference/crates-and-source-files.html#main-functions )
+
 ----
 
 ## enum
@@ -149,12 +151,13 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 ## tips
 * `let a: () = vec![];`とすると，右辺の型がerrorメッセージとして出現するので便利
 
-## web検索
+## web site
 * 標準ドキュメント
   * [標準ドキュメント検索]( https://doc.rust-lang.org/std/?search= )
 * ライブラリ
   * [crates\.io: Rust Package Registry]( https://crates.io/ )
   * [Docs\.rs]( https://docs.rs/ )
+* [Rust Playground]( https://play.rust-lang.org/ )
 
 ## ライフタイム注釈
 * `'a`: `a`でなくてもよい
