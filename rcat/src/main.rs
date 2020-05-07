@@ -134,21 +134,19 @@ fn main() -> Result<()> {
             )
         })?;
         // TODO: このクロージャを変数に代入するようにしたいが，エラーがでてしまう
-        write_lines(&mut reader, |nr, s| {
-            // TODO: 6を定数に
-            // このif文が煩雑
-            if base_line == nr {
-                // NOTE: green
-                if color_flag {
-                    print!("\x1b[32m{:>6}  {}\x1b[m", nr, s);
-                } else {
-                    print!("{:>6}  {}", nr, s);
+        write_lines(&mut reader, |nr, s| -> bool {
+            let output_flag =
+                base_line <= 0 || base_line - line_context <= nr && nr <= base_line + line_context;
+            if output_flag {
+                let mut prefix = "";
+                let mut suffix = "";
+                if base_line == nr && color_flag {
+                    prefix = "\x1b[32m"; // NOTE: green
+                    suffix = "\x1b[m";
                 }
-            } else if base_line <= 0
-                || base_line - line_context <= nr && nr <= base_line + line_context
-            {
-                print!("{:>6}  {}", nr, s);
+                print!("{}{:>6}  {}{}", prefix, nr, s, suffix);
             }
+            // NOTE: skip rest of the file
             if base_line > 0 && nr == base_line + line_context {
                 return false;
             }
