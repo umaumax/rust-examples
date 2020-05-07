@@ -125,22 +125,16 @@ fn main() -> Result<()> {
     if files.len() == 0 {
         files.push("-");
     }
-    files.iter().for_each(|filename| {
-        let mut reader = match get_buf_reader_safe(filename) {
-            Ok(reader) => reader,
-            Err(e) => {
-                eprintln!(
-                    "{}: '{}' at {}",
-                    e,
-                    filename,
-                    env::current_dir().unwrap().to_string_lossy()
-                );
-                return;
-            }
-        };
-        // TODO: ディレクトリを指定したときの挙動確認...?
+    files.iter().try_for_each(|filename| -> Result<()> {
+        let mut reader = get_buf_reader_safe(filename).with_context(|| {
+            format!(
+                "while opening file '{}' at {}",
+                filename,
+                env::current_dir().unwrap().to_string_lossy()
+            )
+        })?;
         // TODO: このクロージャを変数に代入するようにしたいが，エラーがでてしまう
-        let _ = write_lines(&mut reader, |nr, s| {
+        write_lines(&mut reader, |nr, s| {
             // TODO: 6を定数に
             // このif文が煩雑
             if base_line == nr {
@@ -159,8 +153,9 @@ fn main() -> Result<()> {
                 return false;
             }
             true
-        });
-    });
+        })?;
+        Ok(())
+    })?;
     Ok(())
 }
 
@@ -181,7 +176,7 @@ where
                     break;
                 }
             }
-            Err(e) => return Err(e),
+            Err(err) => return Err(err),
         }
         nr += 1;
     }
