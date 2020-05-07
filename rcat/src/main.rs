@@ -120,6 +120,25 @@ fn main() -> Result<()> {
     let isatty: bool = atty::is(atty::Stream::Stdout);
     let color_flag: bool = color_when.str_to_color_flag(isatty);
 
+    let f = |nr: i32, s: &String| -> bool {
+        let output_flag =
+            base_line <= 0 || base_line - line_context <= nr && nr <= base_line + line_context;
+        if output_flag {
+            let mut prefix = "";
+            let mut suffix = "";
+            if base_line == nr && color_flag {
+                prefix = "\x1b[32m"; // NOTE: green
+                suffix = "\x1b[m";
+            }
+            print!("{}{:>6}  {}{}", prefix, nr, s, suffix);
+        }
+        // NOTE: skip rest of the file
+        if base_line > 0 && nr == base_line + line_context {
+            return false;
+        }
+        true
+    };
+
     let mut files: Vec<_> = matches.values_of("files").unwrap().collect();
     // NOTE: default input is stdin
     if files.len() == 0 {
@@ -133,25 +152,7 @@ fn main() -> Result<()> {
                 env::current_dir().unwrap().to_string_lossy()
             )
         })?;
-        // TODO: このクロージャを変数に代入するようにしたいが，エラーがでてしまう
-        write_lines(&mut reader, |nr, s| -> bool {
-            let output_flag =
-                base_line <= 0 || base_line - line_context <= nr && nr <= base_line + line_context;
-            if output_flag {
-                let mut prefix = "";
-                let mut suffix = "";
-                if base_line == nr && color_flag {
-                    prefix = "\x1b[32m"; // NOTE: green
-                    suffix = "\x1b[m";
-                }
-                print!("{}{:>6}  {}{}", prefix, nr, s, suffix);
-            }
-            // NOTE: skip rest of the file
-            if base_line > 0 && nr == base_line + line_context {
-                return false;
-            }
-            true
-        })?;
+        write_lines(&mut reader, f)?;
         Ok(())
     })?;
     Ok(())
