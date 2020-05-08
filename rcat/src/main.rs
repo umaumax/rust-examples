@@ -6,6 +6,9 @@ use std::io::BufReader;
 use std::ops::Fn;
 use std::str::FromStr;
 
+#[macro_use]
+extern crate anyhow;
+
 use anyhow::{Context, Result};
 
 fn build_app() -> clap::App<'static, 'static> {
@@ -92,12 +95,15 @@ pub fn get_buf_reader(file: &str) -> BufReader<Box<dyn std::io::Read>> {
     BufReader::new(read)
 }
 
-pub fn get_buf_reader_safe(
-    file: &str,
-) -> Result<BufReader<Box<dyn std::io::Read>>, std::io::Error> {
+pub fn get_buf_reader_safe(file: &str) -> Result<BufReader<Box<dyn std::io::Read>>> {
     let reader: Box<dyn std::io::Read> = match file {
         "-" => Box::new(io::stdin()),
-        _ => Box::new(File::open(file)?),
+        _ => {
+            if std::path::Path::new(file).is_dir() {
+                return Err(anyhow!("{} is a directory, not a file", file));
+            }
+            Box::new(File::open(file)?)
+        }
     };
     Ok(BufReader::new(reader))
 }

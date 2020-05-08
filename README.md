@@ -33,6 +33,8 @@ __注意点として，`failure`はメンテナンスされていない([From fa
 
 [std::error::Error \- Rust]( https://doc.rust-lang.org/std/error/trait.Error.html#examples )
 
+独自のエラー型を外部ライブラリを利用しないで定義する場合
+
 e.g.
 ```rust
 use std::fmt;
@@ -48,9 +50,27 @@ impl fmt::Display for XXXError {
 }
 ```
 
+`thiserror`を利用した場合との比較はこちら[Rustの便利クレート \- Qiita]( https://qiita.com/qryxip/items/7c16ab9ef3072c1d7199#thiserror )
+
 `anyhow`の使い方は[Refactor: use error handling lib 'anyhow' · umaumax/rust\-examples@37540cc]( https://github.com/umaumax/rust-examples/commit/37540ccf1422833371fd01171467a4eda4577d21 )を参照
 
+`one-off`(一回限り)のエラーに関しては`anyhow!`を利用すると良い
+
+そのときは，下記の記述が必要
+
+```
+#[macro_use]
+extern crate anyhow;
+```
+
 ライブラリを利用しない場合は[Rustのエラーとなかよくなる \- 3c1uのブログ]( https://3c1u.hatenablog.com/entry/2019/09/18/060000 )のページがわかりやすい
+
+まとめとしては，
+[Best error\-handling practices \- Jan 2020 : rust]( https://www.reddit.com/r/rust/comments/ej67aa/best_errorhandling_practices_jan_2020/ )
+の意見に賛同
+
+サーベイはこちら
+[Error Handling Survey]( https://blog.yoshuawuyts.com/error-handling-survey/ )
 
 ----
 
