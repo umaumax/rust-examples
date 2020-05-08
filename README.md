@@ -143,6 +143,7 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 * main.rs
 * lib.rs
 * mod.rs
+  * このファイルはRust 2018では，わざわざ作らなくても良い [Path clarity \- The Edition Guide]( https://doc.rust-lang.org/nightly/edition-guide/rust-2018/module-system/path-clarity.html#no-more-modrs )
 * build.rs
 
 ## 注意点
@@ -212,6 +213,8 @@ mod tests {
 > Rust2018時代のイディオマティックなRustコードでは、
 > extern crate を使いません。
 > 代わりに、extern prelude (1.30.0で安定化) を使います。
+
+参照: [Path clarity \- The Edition Guide]( https://doc.rust-lang.org/nightly/edition-guide/rust-2018/module-system/path-clarity.html#no-more-extern-crate )
 
 * ダウンロード数ランキング
   * [Crates \- crates\.io: Rust Package Registry]( https://crates.io/crates?sort=downloads )
