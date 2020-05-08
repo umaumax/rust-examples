@@ -230,3 +230,44 @@ mod tests {
 
 > System exit code constants as defined by sysexits.h
 
+## arm cross build
+
+[rustをインストールしてhello world をARM用にクロスコンパイルするまでの手順 \- Qiita]( https://qiita.com/tetsu_koba/items/1ab400a3d4ec9725b044 )
+
+```
+# ターゲットの確認
+# rustup target list
+
+rustup target add armv7-unknown-linux-gnueabihf
+
+# rustのビルド時にlinkerオプションにarmクロスコンパイラを指定する必要がある
+sudo apt-get -y install g++-arm-linux-gnueabihf
+```
+
+```
+$ rustc -C linker=arm-linux-gnueabihf-gcc --target=armv7-unknown-linux-gnueabihf hello_world.rs
+$ file hello_world
+hello_world: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.2.0, BuildID[sha1]=35c6ee7d36b72e877eb9094890a4c661e55e3421, not stripped
+
+# 2.6MB => 161KB
+$ arm-linux-gnueabihf-strip hello_world
+hello_world: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.2.0, BuildID[sha1]=35c6ee7d36b72e877eb9094890a4c661e55e3421, stripped
+```
+
+### cargoでcross buildしたい場合の設定
+`~/.cargo/config`を新規に作成すること
+```
+cat >> ~/.cargo/config << EOF
+# Set default build target to armv7hf
+# [build]
+# target = "armv7-unknown-linux-gnueabihf"
+
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+EOF
+```
+
+```
+$ cargo build --target armv7-unknown-linux-gnueabihf
+$ ls ./target/armv7-unknown-linux-gnueabihf/debug/hello_world
+```
