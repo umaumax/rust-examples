@@ -55,7 +55,9 @@ impl fmt::Display for XXXError {
 ----
 
 ## memo
-`rustfmt`では，分割できない長すぎる行(max_width default: 100を超える)のとき，挙動がおかしくなる(exit codeは`0`だが，実質formatされない模様)
+* `rustfmt`では，分割できない長すぎる行(max_width default: 100を超える)のとき，exit codeは`0`だが，formatされない現象に遭遇する
+  * [Gives up on chains if any line is too long\. · Issue \#3863 · rust\-lang/rustfmt]( https://github.com/rust-lang/rustfmt/issues/3863 )
+  * [RustFmt fails to format file with long line within scope of lambda passed to member function · Issue \#3135 · rust\-lang/rustfmt]( https://github.com/rust-lang/rustfmt/issues/3135 )
 
 下記相当のことを行えば回避できる
 ```bash
@@ -81,7 +83,7 @@ rustfmt src/main.rs --emit stdout --config max_width=200
   * いわゆるsuper的なことはできない? <- そもそも，c++でこれできる?
 * [Freezing \- Rust By Example]( https://doc.rust-lang.org/stable/rust-by-example/scope/borrow/freeze.html )
   * 最近のrustが賢いのか普通に{}なしでもOKの模様...
-* `PartialOrd`: `Ord`は`order`の略称?
+* `PartialOrd`: `Ord`は`order`の略称
 * [args関数と不正なユニコード]( https://doc.rust-jp.rs/book/second-edition/ch12-01-accepting-command-line-arguments.html#args%E9%96%A2%E6%95%B0%E3%81%A8%E4%B8%8D%E6%AD%A3%E3%81%AA%E3%83%A6%E3%83%8B%E3%82%B3%E3%83%BC%E3%83%89 )
 
 * [Rc<T>は、参照カウント方式のスマートポインタ \- The Rust Programming Language]( https://doc.rust-jp.rs/book/second-edition/ch15-04-rc.html )
