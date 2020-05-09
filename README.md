@@ -234,6 +234,14 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 * 正規表現
   * [Redux regex playground]( https://2fd.github.io/rust-regex-playground/#method=find&regex=%5Cw%2B&text=abc )
 
+* 命名規則
+  * [Naming \- Rust API Guidelines]( https://rust-lang.github.io/api-guidelines/naming.html )
+
+> In UpperCamelCase, acronyms and contractions of compound words count as one word: use Uuid rather than UUID, Usize rather than USize or Stdin rather than StdIn. 
+
+* エラーコード一覧
+  * [Rust Compiler Error Index]( https://doc.rust-lang.org/error-index.html )
+
 ## ライフタイム注釈
 * `'a`: `a`でなくてもよい
 * `'static`: これは特別扱いされ，プログラム全体の期間を示す
