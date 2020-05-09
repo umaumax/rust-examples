@@ -231,6 +231,9 @@ rustfmt src/main.rs --emit stdout --config max_width=200
   * [Docs\.rs]( https://docs.rs/ )
 * [Rust Playground]( https://play.rust-lang.org/ )
 
+* 正規表現
+  * [Redux regex playground]( https://2fd.github.io/rust-regex-playground/#method=find&regex=%5Cw%2B&text=abc )
+
 ## ライフタイム注釈
 * `'a`: `a`でなくてもよい
 * `'static`: これは特別扱いされ，プログラム全体の期間を示す
