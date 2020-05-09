@@ -7,8 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.28"
 atty = "0.2"
 clap = "2.33.0"
-anyhow = "1.0.28"
-strum_macros = "0.18.0"
 strum = "0.18.0"
+strum_macros = "0.18.0"
