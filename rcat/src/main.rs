@@ -47,38 +47,16 @@ fn build_app() -> clap::App<'static, 'static> {
         )
 }
 
+#[derive(strum_macros::EnumString)]
+#[strum(serialize_all = "kebab_case")]
 enum ColorWhen {
     Always,
     Never,
     Auto,
 }
 
-#[derive(Debug)]
-struct ColorWhenError(String);
-impl fmt::Display for ColorWhenError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "ColorWhen string is 'always|never|auto', not allowed '{}'",
-            self
-        )
-    }
-}
-impl std::error::Error for ColorWhenError {}
-
-impl FromStr for ColorWhen {
-    type Err = ColorWhenError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "always" => Ok(ColorWhen::Always),
-            "never" => Ok(ColorWhen::Never),
-            "auto" => Ok(ColorWhen::Auto),
-            _ => Err(ColorWhenError(s.to_string())),
-        }
-    }
-}
 impl ColorWhen {
-    fn str_to_color_flag(&self, isatty: bool) -> bool {
+    fn mix_isatty_to_color_flag(&self, isatty: bool) -> bool {
         match self {
             ColorWhen::Always => true,
             ColorWhen::Never => false,
@@ -124,7 +102,7 @@ fn main() -> Result<()> {
         .with_context(|| format!("failed parse --color option"))?;
 
     let isatty: bool = atty::is(atty::Stream::Stdout);
-    let color_flag: bool = color_when.str_to_color_flag(isatty);
+    let color_flag: bool = color_when.mix_isatty_to_color_flag(isatty);
 
     let f = |nr: i32, s: &String| -> bool {
         let output_flag =

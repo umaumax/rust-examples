@@ -18,6 +18,55 @@ cargo install --git https://github.com/umaumax/rust-examples rcat
     * [clap \- Rust]( https://docs.rs/clap/2.27.1/clap/#quick-example )
       * オプションを取らない複数の引数の例は`INPUT`を参照
 
+### enum
+[strum \- crates\.io: Rust Package Registry]( https://crates.io/crates/strum )
+
+```
+cargo add strum
+cargo add strum_macros
+```
+
+```
+#[derive(strum_macros::EnumString)]
+#[strum(serialize_all = "kebab_case")] // default is camel case
+enum ColorWhen {
+    Always,
+    Never,
+    Auto,
+}
+```
+
+とすることで，下記相当の実装となる
+
+```
+impl FromStr for ColorWhen {
+    type Err = ColorWhenError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "always" => Ok(ColorWhen::Always),
+            "never" => Ok(ColorWhen::Never),
+            "auto" => Ok(ColorWhen::Auto),
+            _ => Err(ColorWhenError(s.to_string())),
+        }
+    }
+}
+
+#[derive(Debug)]
+struct ColorWhenError(String);
+impl fmt::Display for ColorWhenError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "ColorWhen string is 'always|never|auto', not allowed '{}'",
+            self
+        )
+    }
+}
+impl std::error::Error for ColorWhenError {}
+```
+
+[Derive EnumString · Peternator7/strum Wiki]( https://github.com/Peternator7/strum/wiki/Derive-EnumString )
+
 ### error handling
 概念としては，[Nicer error reporting \- Command Line Applications in Rust]( https://rust-cli.github.io/book/tutorial/errors.html )のページがわかりやすいが，
 __注意点として，`failure`はメンテナンスされていない([From failure to Fehler]( https://boats.gitlab.io/blog/post/failure-to-fehler/ ))__
