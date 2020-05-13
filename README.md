@@ -196,6 +196,10 @@ rustfmt src/main.rs --emit stdout --config max_width=200
 
 * [main関数の返り値の型]( https://doc.rust-lang.org/reference/crates-and-source-files.html#main-functions )
 
+* 構造体のdefault value
+  * [Rustの構造体に対する疑問を検証してみた \- 雑なメモ書き]( https://hiroyukim.hatenablog.com/entry/2020/02/22/205032 )
+  * [Rustのstd::default::Default]( https://www.utam0k.jp/blog/2018/05/28/rust_std_default/ )
+
 ----
 
 ## enum
