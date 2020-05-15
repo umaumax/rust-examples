@@ -357,3 +357,94 @@ EOF
 $ cargo build --target armv7-unknown-linux-gnueabihf
 $ ls ./target/armv7-unknown-linux-gnueabihf/debug/hello_world
 ```
+
+====
+
+# rustからcppを呼び出す手順
+
+[rust\-ffi\-examples/rust\-to\-cpp at master · sn99/rust\-ffi\-examples]( https://github.com/sn99/rust-ffi-examples/tree/master/rust-to-cpp )
+
+1. cppで`extern "C"`として、関数のシンボルがデマングルされるようにする
+
+```
+extern "C"
+int triple_input(int input) {
+    return input * 3;
+}
+```
+
+2. rust側でcppの関数を呼びだすためのプロトタイプ宣言相当のものを記述し、`unsafe`で呼び出す
+
+```
+extern crate libc;
+
+extern {
+    fn triple_input(input: libc::c_int) -> libc::c_int;
+}
+
+fn main() {
+    let input = 4;
+    let output = unsafe { triple_input(input) };
+    println!("{} * 3 = {}", input, output);
+}
+```
+
+3. 何かしらのライブラリ(e.g. `cc`)を利用して、`build.rs`を作成して、ビルドできるようにする
+
+`build.rs`
+```
+extern crate cc;
+
+fn main() {
+    cc::Build::new()
+        .file("src/triple.cpp")
+        .cpp(true)
+        .compile("libtriple.a");
+}
+```
+
+c++のライブラリはパッケージ名に適当なハッシュ関数が付加されたディレクトリに配置されている
+`./target/debug/build/rust-to-cpp-4bcf80914f0d03a5/out/libtriple.a`
+
+利用されたコマンドは`output`ファイルを見ればわかる
+```
+$ cat ./target/debug/build/rust-to-cpp-4bcf80914f0d03a5/output | grep "^running"
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "xxx/target/debug/build/rust-to-cpp-4bcf80914f0d03a5/out/src/triple.o" "-c" "src/triple.cpp"
+running: "ar" "crs" "xxx/target/debug/build/rust-to-cpp-4bcf80914f0d03a5/out/libtriple.a" "xxx/target/debug/build/rust-to-cpp-4bcf80914f0d03a5/out/src/triple.o"
+```
+
+また、ビルド方法として、`cmake`を採用している場合には次の例のように`cmake`クレートを利用すればよい
+
+[rust\-ffi\-examples/rust\-to\-cmake at master · sn99/rust\-ffi\-examples]( https://github.com/sn99/rust-ffi-examples/tree/master/rust-to-cmake )
+
+====
+
+## bindgen
+
+`clang++`が必須
+
+[rust\-lang/rust\-bindgen: Automatically generates Rust FFI bindings to C \(and some C\+\+\) libraries\.]( https://github.com/rust-lang/rust-bindgen )
+
+[Requirements \- The \`bindgen\` User Guide]( https://rust-lang.github.io/rust-bindgen/requirements.html )
+
+> If you are generating bindings to C++, you almost definitely want 3.9 or greater.
+
+### `bzip2`をwrapするチュートリアル
+
+[Tutorial \- The \`bindgen\` User Guide]( https://rust-lang.github.io/rust-bindgen/tutorial-0.html )
+
+[fitzgen/bindgen\-tutorial\-bzip2\-sys: A tutorial/example crate for generating C/C\+\+ bindings on\-the\-fly with libbindgen]( https://github.com/fitzgen/bindgen-tutorial-bzip2-sys )
+
+```
+git clone https://github.com/fitzgen/bindgen-tutorial-bzip2-sys.git
+cd bindgen-tutorial-bzip2-sys
+cargo build
+cargo test
+```
+
+`as _`は、型キャストの`auto`版だと思われる
+
+## bindgenコマンド
+* 対象とするファイルが`.h`の場合はcのファイルと解釈するので、`.hpp`するとcppのファイルとして解釈するようになる
+  * もしくは`bindgen xxx.h -o xxx.rs -- -x c++`とする
+* `bindgen xxx.h -o xxx.rs -- -Ixxx`とすることで、ヘッダのインクルードの解決ができる
