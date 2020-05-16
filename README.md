@@ -417,8 +417,6 @@ running: "ar" "crs" "xxx/target/debug/build/rust-to-cpp-4bcf80914f0d03a5/out/lib
 
 [rust\-ffi\-examples/rust\-to\-cmake at master · sn99/rust\-ffi\-examples]( https://github.com/sn99/rust-ffi-examples/tree/master/rust-to-cmake )
 
-====
-
 ## bindgen
 
 `clang++`が必須
@@ -448,3 +446,52 @@ cargo test
 * 対象とするファイルが`.h`の場合はcのファイルと解釈するので、`.hpp`するとcppのファイルとして解釈するようになる
   * もしくは`bindgen xxx.h -o xxx.rs -- -x c++`とする
 * `bindgen xxx.h -o xxx.rs -- -Ixxx`とすることで、ヘッダのインクルードの解決ができる
+
+## LD_PRELOAD
+* `getuid`を`LD_PRELOAD`する例
+  * [redhook/examples/fakeroot at master · geofft/redhook]( https://github.com/geofft/redhook/tree/master/examples/fakeroot )
+    * `git clone https://github.com/geofft/redhook; cd redhook/examples/fakeroot; cargo build`
+* [hooky \- crates\.io: Rust Package Registry]( https://crates.io/crates/hooky )
+
+## ハマって調べたこと一覧
+* [Use libc::\_\_error\(\) rather than libc::\_\_errno\_location\(\) on macOS by gibfahn · Pull Request \#666 · redox\-os/ion]( https://github.com/redox-os/ion/pull/666 )
+* [rust \- Cannot apply unary operator \`\-\` to type \`usize\` \- Stack Overflow]( https://stackoverflow.com/questions/44424540/cannot-apply-unary-operator-to-type-usize )
+* [How do I convert a C string into a Rust string and back via FFI? \- Stack Overflow]( https://stackoverflow.com/questions/24145823/how-do-i-convert-a-c-string-into-a-rust-string-and-back-via-ffi )
+* [Rust CString::as\_ptrの正しい使い方 \- Qiita]( https://qiita.com/dalance/items/a40bcf547215b69859fb )
+* C言語に文字列を渡す場合は`"getuid\0".as_ptr() as *const c_char`のように末尾に`NULL`文字を付加すること
+* 既存の型にメソッドを追加する
+  * [Rustの単一実装トレイトパターン \- 簡潔なQ]( https://qnighy.hatenablog.com/entry/2017/04/01/070000 )
+  * あくまでシンタックスシュガーに過ぎない
+* シグナルを送りたい(`std::process::id() as i32`を引数に指定すればもちろん，自分自身にも可能)
+  * [rust \- How do I send a signal to a \`Child\` subprocess? \- Stack Overflow]( https://stackoverflow.com/questions/49210815/how-do-i-send-a-signal-to-a-child-subprocess )
+* シグナルが来るまで待機したい
+  * [How to catch signals in Rust \- Stack Overflow]( https://stackoverflow.com/questions/26280859/how-to-catch-signals-in-rust )
+  * シグナルは1回のみ有効にしたい
+    * [Rustでシグナルを手軽に扱う \- Qiita]( https://qiita.com/hhatto/items/d226e66141996cbd25b8 )
+
+* `libc`は`std::libc`ではなく、基本的に[libc \- crates\.io: Rust Package Registry]( https://crates.io/crates/libc )を指している
+* `use xxx as _`
+  * [Use declarations \- The Rust Reference]( https://doc.rust-lang.org/reference/items/use-declarations.html#underscore-imports )
+  * [Rustのモジュールを詳細に理解する\(3\) モジュールグラフの構造 \- 簡潔なQ]( https://qnighy.hatenablog.com/entry/2019/05/08/190000 )
+* [Rustの構造体メモリレイアウト \- ryochack\.blog]( https://ryochack.hatenablog.com/entry/2018/03/23/184943 )
+
+## `link_section`
+
+Mach-O形式
+```
+#[link_section = "__DATA,__mod_init_func"]
+```
+セグメントとセクションの両方を指定する必要がある
+
+ELF形式
+```
+#[link_section = ".init_array"]
+```
+セクションのみでOK
+
+`main()`関数前に実行する領域として，`__DATA,__mod_init_func`と`.init_array`をそれぞれ利用する例を見るに，sectionを実行ファイルの形式ごとに仕様を調べる必要があることがわかる
+
+### Mach-Oのsectionとsegmentを調べる方法
+```
+llvm-readelf -S /bin/ls
+```
