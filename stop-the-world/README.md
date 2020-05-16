@@ -1,6 +1,6 @@
 # stop-the-world
 
-`LD_PRELOAD` base library for stop the program before starting `main()`
+`LD_PRELOAD` base library for stopping(send `SIGTSTP`) the program before starting `main()`
 
 ## for what?
 * lazy `gdb` attach pid
@@ -20,6 +20,8 @@ STOP_THE_WORLD_TERM=0 # (default is disable)
 
 ## how to send SIGCONT signal
 ```
+fg
+# or
 kill -SIGCONT $PID
 # or
 pkill -SIGCONT $PNAME

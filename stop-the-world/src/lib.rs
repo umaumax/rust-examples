@@ -9,7 +9,7 @@ extern "C" fn ld_preload_initialise_fn() {
         Err(_) => true,
     };
     if init_process_flag {
-        signal::kill(Pid::from_raw(std::process::id() as i32), Signal::SIGSTOP).unwrap();
+        signal::kill(Pid::from_raw(std::process::id() as i32), Signal::SIGTSTP).unwrap();
     }
 }
 
@@ -20,7 +20,7 @@ extern "C" fn ld_preload_deinitialise_fn() {
         Err(_) => false,
     };
     if term_process_flag {
-        signal::kill(Pid::from_raw(std::process::id() as i32), Signal::SIGSTOP).unwrap();
+        signal::kill(Pid::from_raw(std::process::id() as i32), Signal::SIGTSTP).unwrap();
     }
 }
 
