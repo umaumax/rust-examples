@@ -13,9 +13,13 @@ LD_PRELOAD=./target/debug/libstop_the_world.so ls
 # darwin
 DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=./target/debug/libstop_the_world.dylib ls
 
+# if your environment has no output log of background process pid, set below environment variable
+STOP_THE_WORLD_PIDFILE=$(tty)
+
 # environment variable
 STOP_THE_WORLD_INIT=1 # (default is enable)
 STOP_THE_WORLD_TERM=0 # (default is disable)
+STOP_THE_WORLD_PIDFILE="" # (default is no output)
 ```
 
 ## how to send SIGCONT signal
