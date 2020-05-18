@@ -9,7 +9,7 @@
 ## how to run
 ```
 # linux
-DY_PRELOAD=./target/debug/libstop_the_world.so ls
+LD_PRELOAD=./target/debug/libstop_the_world.so ls
 # darwin
 DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=./target/debug/libstop_the_world.dylib ls
 
