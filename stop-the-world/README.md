@@ -30,3 +30,43 @@ kill -SIGCONT $PID
 # or
 pkill -SIGCONT $PNAME
 ```
+
+## FYI
+
+* some rust program: NG(no sleep)
+* some c++ program: OK
+* `kill -SIGSEGV` to `sleep`: OK
+
+```cpp
+#include <chrono>
+#include <csignal>
+#include <thread>
+
+void segv_handler(int sig) {
+  std::this_thread::sleep_for(std::chrono::seconds(3600 * 24));
+}
+
+namespace internal {
+struct Segvstop {
+  Segvstop() {
+    struct sigaction sa;
+    sa.sa_flags   = 0;
+    sa.sa_handler = segv_handler;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGSEGV, &sa, nullptr);
+  }
+  ~Segvstop() {}
+};
+
+static Segvstop segvstop;
+}  // namespace internal
+```
+
+[gdb上で再現しないセグフォをgdbで追跡する \- Qiita]( https://qiita.com/s417-lama/items/daea1a029f58d71358ef )
+
+darwin
+
+```
+g++ -shared -fPIC -std=c++11 segvstop.cpp -o libsegvstop.dylib
+DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=./libsegvstop.dylib XXX
+```
