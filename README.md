@@ -495,3 +495,10 @@ ELF形式
 ```
 llvm-readelf -S /bin/ls
 ```
+
+## rustのコードをdynamic libraryとしてビルドして，他のrustのプログラムから利用したい
+
+rust ABIの仕様上，`extern`を利用して，C ABIを経由する必要がある
+
+* [Compiling a Rust library as a dynamic library, then using it from Rust projects \- help \- The Rust Programming Language Forum]( https://users.rust-lang.org/t/compiling-a-rust-library-as-a-dynamic-library-then-using-it-from-rust-projects/13055 )
+* [How to create a dynamic rust library, and link to it from rust? : rust]( https://www.reddit.com/r/rust/comments/abefuy/how_to_create_a_dynamic_rust_library_and_link_to/ )
