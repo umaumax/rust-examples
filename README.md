@@ -502,3 +502,13 @@ rust ABIの仕様上，`extern`を利用して，C ABIを経由する必要が�
 
 * [Compiling a Rust library as a dynamic library, then using it from Rust projects \- help \- The Rust Programming Language Forum]( https://users.rust-lang.org/t/compiling-a-rust-library-as-a-dynamic-library-then-using-it-from-rust-projects/13055 )
 * [How to create a dynamic rust library, and link to it from rust? : rust]( https://www.reddit.com/r/rust/comments/abefuy/how_to_create_a_dynamic_rust_library_and_link_to/ )
+
+## csv
+### ヘッダーの設定
+[csv::ReaderBuilder \- Rust]( https://docs.rs/csv/1.0.0/csv/struct.ReaderBuilder.html#example-4 )
+
+### 行の形式が一致していない場合
+[csv::ReaderBuilder \- Rust]( https://docs.rs/csv/1.0.0/csv/struct.ReaderBuilder.html#example-flexible-records-enabled )
+
+### 行をtupleや構造体に変換したい
+[csv::tutorial \- Rust]( https://docs.rs/csv/1.0.0/csv/tutorial/index.html#reading-with-serde )
