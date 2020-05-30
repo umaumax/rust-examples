@@ -512,3 +512,13 @@ rust ABIの仕様上，`extern`を利用して，C ABIを経由する必要が�
 
 ### 行をtupleや構造体に変換したい
 [csv::tutorial \- Rust]( https://docs.rs/csv/1.0.0/csv/tutorial/index.html#reading-with-serde )
+
+## rust symbol hash
+
+* [Question on \`librustc\_symbol\_mangling\` \- help \- The Rust Programming Language Forum]( https://users.rust-lang.org/t/question-on-librustc-symbol-mangling/42646 )
+
+* [2603\-rust\-symbol\-name\-mangling\-v0 \- The Rust RFC Book]( https://rust-lang.github.io/rfcs/2603-rust-symbol-name-mangling-v0.html )
+
+> When used as part of a stable ABI, it should be possible to predict the symbol name for a given source-level construct.
+
+> Since the current scheme generates its hash from the values of various compiler internal data structures, an alternative compiler implementation could not predict the symbol name, even for simple cases.
