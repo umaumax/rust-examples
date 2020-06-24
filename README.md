@@ -475,6 +475,9 @@ cargo test
   * [Rustのモジュールを詳細に理解する\(3\) モジュールグラフの構造 \- 簡潔なQ]( https://qnighy.hatenablog.com/entry/2019/05/08/190000 )
 * [Rustの構造体メモリレイアウト \- ryochack\.blog]( https://ryochack.hatenablog.com/entry/2018/03/23/184943 )
 
+* github上のクレートを利用する
+  * [Specifying Dependencies \- The Cargo Book]( https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories )
+
 ## `link_section`
 
 Mach-O形式
@@ -522,3 +525,12 @@ rust ABIの仕様上，`extern`を利用して，C ABIを経由する必要が�
 > When used as part of a stable ABI, it should be possible to predict the symbol name for a given source-level construct.
 
 > Since the current scheme generates its hash from the values of various compiler internal data structures, an alternative compiler implementation could not predict the symbol name, even for simple cases.
+
+## lifetime
+* [Rustの2種類の 'static \| 俺とお前とlaysakura]( https://laysakura.github.io/2020/05/21/rust-static-lifetime-and-static-bounds/ )
+  * 理解しやすい
+
+## 実行速度
+* [Rust: Dropping heavy things in another thread can make your code 10000 times faster]( https://abramov.io/rust-dropping-things-in-another-thread )
+  * メモリ解放に時間がかかる構造(大量のデストラクタが実行されるデータ構造)の場合に，擬似的に時間停止しているかのような状態になる
+    * さらに，マルチスレッドで同じタイミングでメモリ解放が大量に行われる場合には，逆のパターンであえて，シングルスレッドに解放処理を任せると競合しなくなる
