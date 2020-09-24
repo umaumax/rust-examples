@@ -4,10 +4,11 @@
 
 ## for what?
 * lazy `gdb` attach pid
+* get pid for `pmap` to see memory mapping
 * to set pid to `tasks` file of `cgroup`
 
 ## how to run
-```
+``` bash
 # linux
 LD_PRELOAD=./target/debug/libstop_the_world.so ls
 # darwin
@@ -23,7 +24,7 @@ STOP_THE_WORLD_PIDFILE="" # (default is no output)
 ```
 
 ## how to send SIGCONT signal
-```
+``` bash
 fg
 # or
 kill -SIGCONT $PID
@@ -37,7 +38,7 @@ pkill -SIGCONT $PNAME
 * some c++ program: OK
 * `kill -SIGSEGV` to `sleep`: OK
 
-```cpp
+``` cpp
 #include <chrono>
 #include <csignal>
 #include <thread>
@@ -62,11 +63,12 @@ static Segvstop segvstop;
 }  // namespace internal
 ```
 
+----
+
 [gdb上で再現しないセグフォをgdbで追跡する \- Qiita]( https://qiita.com/s417-lama/items/daea1a029f58d71358ef )
 
 darwin
-
-```
+``` bash
 g++ -shared -fPIC -std=c++11 segvstop.cpp -o libsegvstop.dylib
 DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=./libsegvstop.dylib XXX
 ```
