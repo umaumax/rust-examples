@@ -1,0 +1,13 @@
+[package]
+name = "hash-app"
+version = "0.1.0"
+authors = ["umaumax <umauma7083@gmail.com>"]
+edition = "2018"
+
+# [build]
+# target = "x86_64-unknown-linux-gnu"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lazy_static = "1.4.0"
