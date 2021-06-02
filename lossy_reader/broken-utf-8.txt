@@ -1,0 +1,4 @@
+This is broken UTF-8 text.
+⭐⭐⭐
+NANOHA
+��NA⭐N⭐O⭐N⭐A
