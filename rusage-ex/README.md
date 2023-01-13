@@ -1,0 +1,3 @@
+# rusage example
+
+for linux
